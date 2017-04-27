@@ -34,7 +34,7 @@ $(document).ready(function() {
 		storage.setItem('personalBest', 0)
 	}
 	updateSubtitle()
-	todo = getItem('todoItem') || 'things'
+	todo = storage.getItem('todoItem') || 'things'
 })
 
 function updatePersonalBest(record) {

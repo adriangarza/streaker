@@ -8,6 +8,7 @@ html, body {
 	background-color: var(--highlight-color);
 	background-image: linear-gradient(to bottom, #0e0013 0%, #1e0b23 100%);
 	background-size: cover;
+	background-attachment: fixed;
 	height: 100vh;
 	display: inline;
 }
@@ -45,6 +46,14 @@ h2 {
 
 ul {
 	list-style: none;
+}
+
+#logo {
+	width: 35vw;
+	height: auto;
+	position: fixed;
+	bottom: 15vh;
+	right: 5px;
 }
 
 /* media dependent */
