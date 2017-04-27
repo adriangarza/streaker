@@ -1,0 +1,23 @@
+<!doctype HTML>
+<html>
+<head>
+	<link rel="stylesheet" href="css/main.css" />
+	<title>Streaker</title>
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,100' rel='stylesheet' type='text/css'/>
+	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,800" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1 id="progress">0 things in a row</h1>
+		<p id="subtitle"></p>
+		<ul>
+			<li><h2 id="incrementer" onclick="addCount()" class="clickable-text">I did one today</h2></li>
+			<li><h2 id="clearer" onclick="resetCount()" class="clickable-text">I stopped :^(</h2></li>
+			<li><h2 id="changer" onclick="changeTodo()" class="clickable-text">I'm doing something else</h2></li>
+		</ul>
+	</div>
+	<script src="js/main.js"></script>
+	<script src="js/local.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+:root {
+	--highlight-color: #c44e00;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: var(--highlight-color);
+	background-image: linear-gradient(to bottom, #0e0013 0%, #1e0b23 100%);
+	background-size: cover;
+	height: 100vh;
+	display: inline;
+}
+
+h1 {
+	font-family: "Nunito Sans";
+	font-weight: 800;
+	font-size: 7rem;
+	color: var(--highlight-color);
+	margin-bottom: .3rem;
+}
+
+h2 {
+	font-family: "Roboto";
+	font-weight: 400;
+	font-size: 3rem;
+	color: var(--highlight-color);
+}
+
+.clickable-text {
+	text-decoration: underline;
+	cursor: pointer;
+	display: inline-block;
+	user-select: none;
+}
+.clickable-text {
+	
+}
+
+#subtitle {
+	color: var(--highlight-color);
+	font-family: "Roboto";
+	font-size: 2rem;
+}
+
+ul {
+	list-style: none;
+}
+
+/* media dependent */
+.container {
+	width: 80vw;
+	margin: auto;
+}
