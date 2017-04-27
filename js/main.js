@@ -1,18 +1,18 @@
 var todo = "things"
 
 function getCount() {
-	return Number(storage.getItem('todoItem')) || 0
+	return Number(storage.getItem('itemCount')) || 0
 }
 function updateProgress() {
 	$("#progress").html(getCount()+' '+todo+' in a row')
 }
 function resetCount() {
-	storage.setItem('todoItem', 0)
+	storage.setItem('itemCount', 0)
 	alert("cuck")
 	updateProgress()
 }
 function addCount() {
-	storage.incrementItem('todoItem', 1)
+	storage.incrementItem('itemCount', 1)
 
 	if (getCount() > storage.getItem('personalBest')) {
 		updatePersonalBest(getCount())
@@ -23,18 +23,19 @@ function addCount() {
 }
 function changeTodo() {
 	todo = prompt("What are you doing instead?")
-	storage.setItem('todoItem', 0)
+	storage.setItem('itemCount', 0)
+	storage.setItem('todoItem', todo)
 	updateProgress()
 	updatePersonalBest(0)
 }
 
 $(document).ready(function() {
-	updateProgress()
 	if (storage.getItem('personalBest') == null) {
 		storage.setItem('personalBest', 0)
 	}
 	updateSubtitle()
 	todo = storage.getItem('todoItem') || 'things'
+	updateProgress()
 })
 
 function updatePersonalBest(record) {
