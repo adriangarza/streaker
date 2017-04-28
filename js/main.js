@@ -45,6 +45,15 @@ $(document).ready(function() {
 	if (checkTimestamp() > 1) {
 		resetCount()
 	}
+
+	var taskList = [
+		new Task('core workouts', '4', '4', true),
+		new Task('days studied', '0', '7', false),
+	]
+
+	for (var i = 0; i < taskList.length; i++) {
+		$("#tasks").append(taskList[i].html)
+	}
 })
 
 function updatePersonalBest(record) {
@@ -82,14 +91,3 @@ function resetTimestamp() {
 	storage.removeItem('lastTimestamp')
 }
 
-class Task {
-	constructor(name) {
-		this.name = name
-		this.creationDate = Date.now()
-		this.streak = 0
-		this.personalBest = 0
-		this.lastTimestamp = 0
-		this.doneToday = false
-	}
-	
-}

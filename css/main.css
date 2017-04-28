@@ -93,6 +93,10 @@ ul {
 		border-bottom: 2px solid var(--lightpurple);
 		border-right: 2px solid var(--lightpurple);
 	}
+		.streak-container {
+			max-width: 40pt;
+			text-align: center;
+		}
 
 		.taskname {
 			flex-basis: 50%;
