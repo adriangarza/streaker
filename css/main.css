@@ -72,7 +72,10 @@ ul {
 #tasks {
 	width: 100%;
 	margin: 2rem 0;
+	display: flex;
+	flex-direction: column;
 }
+
 	.task {
 		color: var(--highlight-color);
 		font-size: 24pt;
@@ -86,6 +89,7 @@ ul {
 		margin-bottom: 1rem;
 		cursor: default;
 		user-select: none;
+		transition: .2s;
 	}
 
 	.task-item {
@@ -152,6 +156,6 @@ ul {
 .container {
 	width: 80vw;
 	margin: auto;
-	margin-top: 10rem;
+	margin-top: 6rem;
 	animation: fadeUp .5s;
 }

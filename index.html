@@ -8,13 +8,15 @@
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,800" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 </head>
 <body>
 	<div class="container">
 		<img src="img/streaker.png" id="mascot">
-		<h1 id="progress">0 things in a row </h1>
-		<p class="subtitle" id="your-record">your record is 0</p>
-		<p class="subtitle"></p>
+		<div id="heading-container">
+			<h1 id="progress">0 things in a row </h1>
+			<p class="subtitle" id="your-record">your record is 0</p>
+		</div>
 
 		<ul>
 			<li><h2 id="incrementer" onclick="addCount()" class="clickable-text">I did one today</h2></li>
