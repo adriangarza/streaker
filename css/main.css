@@ -84,6 +84,8 @@ ul {
 		border-radius: 2px;
 		border-left: 2px solid var(--lightpurple);
 		margin-bottom: 1rem;
+		cursor: default;
+		user-select: none;
 	}
 
 	.task-item {
@@ -94,7 +96,7 @@ ul {
 		border-right: 2px solid var(--lightpurple);
 	}
 		.streak-container {
-			max-width: 40pt;
+			min-width: 40pt;
 			text-align: center;
 		}
 
@@ -123,6 +125,11 @@ ul {
 		}
 
 		.delete {
+			max-width: 24pt;
+			text-align: center;
+		}
+
+		.singlebutton {
 			max-width: 24pt;
 			text-align: center;
 		}
