@@ -12,12 +12,18 @@ function resetCount() {
 	updateProgress()
 }
 function addCount() {
+	if (checkTimestamp <= 0) {
+		return
+	}
+
 	storage.incrementItem('itemCount', 1)
 
 	if (getCount() > storage.getItem('personalBest')) {
 		updatePersonalBest(getCount())
 		updateSubtitle()
 	}
+
+	updateTimestamp()
 
 	updateProgress()
 }
@@ -36,6 +42,9 @@ $(document).ready(function() {
 	updateSubtitle()
 	todo = storage.getItem('todoItem') || 'things'
 	updateProgress()
+	if (checkTimestamp() > 1) {
+		resetCount()
+	}
 })
 
 function updatePersonalBest(record) {
@@ -43,5 +52,44 @@ function updatePersonalBest(record) {
 	updateSubtitle()
 }
 function updateSubtitle() {
-	$("#subtitle").html("your record is "+storage.getItem('personalBest'))
+	$("#your-record").html("your record is "+storage.getItem('personalBest'))
+}
+
+function checkTimestamp() {
+	var rawTimeStamp = storage.getItem('lastTimestamp')
+	if (rawTimeStamp == null) {
+		return 1
+	}
+	var lastTimestamp = JSON.parse(rawTimeStamp)	
+	var currentDate = new Date()
+
+	//this should be updated later, maybe with date.js
+	return currentDate.getDay() - lastTimestamp.day
+}
+
+function updateTimestamp() {
+	var currentDate = new Date()
+	lastTimestamp = {
+		year: currentDate.getFullYear(),
+		month: currentDate.getMonth(),
+		day: currentDate.getDay(),
+		time: currentDate.getTime()
+	}
+	storage.setItem('lastTimestamp', JSON.stringify(lastTimestamp))
+}
+
+function resetTimestamp() {
+	storage.removeItem('lastTimestamp')
+}
+
+class Task {
+	constructor(name) {
+		this.name = name
+		this.creationDate = Date.now()
+		this.streak = 0
+		this.personalBest = 0
+		this.lastTimestamp = 0
+		this.doneToday = false
+	}
+	
 }

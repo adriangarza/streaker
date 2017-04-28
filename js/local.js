@@ -8,5 +8,8 @@ var storage = {
 	},
 	setItem: function(itemName, value) {
 		localStorage.setItem(itemName, value)
+	},
+	removeItem: function(itemName) {
+		localStorage.removeItem(itemName)
 	}
 }

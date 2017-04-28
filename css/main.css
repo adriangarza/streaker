@@ -1,10 +1,12 @@
 :root {
-	--highlight-color: #c44e00;
+	--highlight-color: white;
+	--orange: #ff9800;
+	--medpurple: #1e0b23;
+	--lightpurple: #2c0c34;
+	--darkpurple: #0e0013;
 }
 
 html, body {
-	margin: 0;
-	padding: 0;
 	background-color: var(--highlight-color);
 	background-image: linear-gradient(to bottom, #0e0013 0%, #1e0b23 100%);
 	background-size: cover;
@@ -21,34 +23,41 @@ h1 {
 	margin-bottom: .3rem;
 }
 
+
+.subtitle {
+	color: var(--highlight-color);
+	font-family: "Nunito Sans";
+	font-size: 16pt;
+	margin-bottom: .5rem;
+}
+
 h2 {
-	font-family: "Roboto";
+	font-family: "Open Sans";
 	font-weight: 400;
 	font-size: 3rem;
 	color: var(--highlight-color);
+	margin: .2rem 0rem;
 }
 
 .clickable-text {
-	text-decoration: underline;
+	font-weight: bold;
 	cursor: pointer;
 	display: inline-block;
 	user-select: none;
+	transition: .2s;
 }
-.clickable-text {
-	
+.clickable-text:hover {
+	color: var(--orange);
 }
 
-#subtitle {
-	color: var(--highlight-color);
-	font-family: "Roboto";
-	font-size: 2rem;
-}
 
 ul {
 	list-style: none;
+
 }
 
-#logo {
+#mascot {
+	display: none;
 	width: 35vw;
 	height: auto;
 	position: fixed;
@@ -56,8 +65,82 @@ ul {
 	right: 5px;
 }
 
+.disabled {
+	opacity: .3;
+}
+
+#tasks {
+	width: 100%;
+	margin: 2rem 0;
+}
+	.task {
+		color: var(--highlight-color);
+		font-size: 24pt;
+		font-family: 'Open Sans';
+		font-weight: bold;
+		display: flex;
+		flex-flow: row nowrap;
+		background-color: #1e0b23;
+		border-radius: 2px;
+		border-left: 2px solid var(--lightpurple);
+		margin-bottom: 1rem;
+	}
+
+	.task-item {
+		padding: 1rem;
+		flex-grow: 1;
+		border-top: 2px solid var(--lightpurple);
+		border-bottom: 2px solid var(--lightpurple);
+		border-right: 2px solid var(--lightpurple);
+	}
+
+		.taskname {
+			flex-basis: 50%;
+		}
+
+		.centered {
+			text-align: center;
+		}
+
+		.checkbutton {
+			max-width: 50pt;
+			text-align: center;
+		}
+
+		.taskbutton {
+			cursor: pointer;
+			user-select: none;
+		}
+		.taskbutton:hover {
+			background-color: var(--lightpurple);
+		}
+		.taskbutton:active {
+			background-color: var(--medpurple);
+		}
+
+		.delete {
+			max-width: 24pt;
+			text-align: center;
+		}
+
+.new-record {
+	color: var(--orange) !important;
+}
+
+@keyframes fadeUp {
+	from {
+		transform: translateY(2rem);
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
 /* media dependent */
 .container {
 	width: 80vw;
 	margin: auto;
+	margin-top: 10rem;
+	animation: fadeUp .5s;
 }
