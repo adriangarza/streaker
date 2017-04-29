@@ -7,9 +7,14 @@ class Task {
 		this.personalBest = personalBest
 		this.lastTimestamp = lastTimestamp
 		//this.doneToday = doneToday
-		this.doneToday = (checkSameDay(new Date(lastTimestamp), new Date()))
-		if (checkAfterTomorrow(new Date(lastTimestamp), new Date())) {
-			this.streak = 0;
+		if (lastTimestamp != null) {
+			this.doneToday = (checkSameDay(new Date(lastTimestamp), new Date()))
+			if (checkAfterTomorrow(new Date(lastTimestamp), new Date())) {
+				this.streak = 0;
+			}
+		} else {
+			this.doneToday = false
+			this.streak = 0
 		}
 		taskManager.addTask(this)
 	}
@@ -25,6 +30,7 @@ class Task {
 			this.personalBest++
 		}
 		this.doneToday = true;
+		this.lastTimestamp = Date.now()
 		this.reloadContent()
 	}
 
@@ -55,7 +61,7 @@ class Task {
 
 	createInnerHTML() {
 		var checkText = this.doneToday ? 'done' : 'add'
-		var streakCheck = (this.streak >= this.personalBest) ? 'new-record' : ''
+		var streakCheck = (this.streak >= this.personalBest && this.streak > 0) ? 'new-record' : ''
 		var checkEnabled = this.doneToday ? 'taskbutton' : 'taskbutton'
 		var addable = /*this.doneToday ? '' :*/ 'onclick="taskManager.toggleDone(\''+this.name+'\')"'
 		
@@ -73,7 +79,7 @@ class Task {
 		<span class="task-item taskbutton singlebutton">\
 			<i class="material-icons">edit</i>\
 		</span>\
-		<span class="task-item delete taskbutton centered" onclick="$(\'#'+this.htmlId+'\').remove()">\
+		<span class="task-item delete taskbutton centered" onclick="taskManager.removeTask(\''+this.name+'\')">\
 			<i class="material-icons" >delete</i>\
 		</span>'
 		return output
@@ -105,7 +111,6 @@ var taskManager = {
 	addToTask: function(taskName) {
 		for (var i = 0; i < this.tasks.length; i++) {
 			if (this.tasks[i].name == taskName) {
-				console.log("found it")
 				this.tasks[i].addOne();
 			}
 		}
@@ -145,6 +150,25 @@ var taskManager = {
 			//convert the stored object into a Task
 			var o = JSON.parse(tempList[i])
 			var t = new Task(o.name, o.streak, o.personalBest, o.doneToday, o.lastTimestamp)
+		}
+	},
+	appendTask: function(taskObj) {
+		$("#tasks").append(taskObj.createHTML())
+	},
+	createTask: function() {
+		var taskName = prompt("What are you gonna do?")
+		while (this.tasks.includes(taskName.toLowerCase())) {
+			taskName = prompt("Try another name, that one is in use.")
+		}
+		var tempTask = new Task(taskName, 0, 0, false, null)
+		this.appendTask(tempTask)
+	},
+	removeTask: function(taskName) {
+		$('#'+this.getTask(taskName).htmlId).remove()
+		for (var i = 0; i < this.tasks.length; i++) {
+			if (this.tasks[i].name == taskName) {
+				this.tasks.splice(i, 1)
+			}
 		}
 	}
 }
