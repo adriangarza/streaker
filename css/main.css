@@ -69,6 +69,10 @@ ul {
 	opacity: .3;
 }
 
+.to-delete {
+	opacity: .3;
+}
+
 #tasks {
 	width: 100%;
 	margin: 2rem 0;

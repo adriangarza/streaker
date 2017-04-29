@@ -39,7 +39,7 @@ $(document).ready(function() {
 	if (storage.getItem('personalBest') == null) {
 		storage.setItem('personalBest', 0)
 	}
-	updateSubtitle()
+	//updateSubtitle()
 	todo = storage.getItem('todoItem') || 'things'
 	updateProgress()
 	if (checkTimestamp() > 1) {

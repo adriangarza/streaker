@@ -15,14 +15,10 @@ function checkAfterTomorrow(date1, date2) {
 	console.log(temp)*/
 	//this is just 12 hours until I can figure out how to work it
 	var day = 86400000
-	var temp = !(date1.getMilliseconds() + day > date2.getMilliseconds())
-	console.log(temp)
-	return temp
+	return !(date1.getMilliseconds() + day > date2.getMilliseconds())
 }
 
 function checkSameDay(date1, date2) {
-	console.log(date1)
-	console.log(date2)
 	return (date1.getFullYear() == date2.getFullYear() 
 		&& date1.getMonth() == date2.getMonth() 
 		&& date1.getDate() == date2.getDate())

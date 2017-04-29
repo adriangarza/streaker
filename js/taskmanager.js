@@ -6,6 +6,7 @@ class Task {
 		this.streak = streak
 		this.personalBest = personalBest
 		this.lastTimestamp = lastTimestamp
+		this.toDelete = false
 		//this.doneToday = doneToday
 		if (lastTimestamp != null) {
 			this.doneToday = (checkSameDay(new Date(lastTimestamp), new Date()))
@@ -17,6 +18,7 @@ class Task {
 			this.streak = 0
 		}
 		taskManager.addTask(this)
+		taskManager.saveTasks()
 	}
 	
 	//replace spaces with dashes for making an html id	
@@ -27,17 +29,19 @@ class Task {
 	addOne() {
 		this.streak++
 		if (this.streak > this.personalBest) {
-			this.personalBest++
+			this.personalBest = this.streak
 		}
 		this.doneToday = true;
 		this.lastTimestamp = Date.now()
 		this.reloadContent()
+		taskManager.saveTasks()
 	}
 
 	subOne() {
 		if (this.streak > 0) this.streak--
 		this.doneToday = false
 		this.reloadContent()
+		taskManager.saveTasks()
 	}
 
 	toggleDone() {
@@ -46,6 +50,16 @@ class Task {
 		} else {
 			this.subOne()
 		}
+	}
+
+	markForDeletion() {
+		$('#'+this.htmlId).addClass("to-delete")
+		this.toDelete = true
+	}
+
+	unmarkForDeletion() {
+		$('#'+this.htmlId).removeClass("to-delete")
+		this.toDelete = false
 	}
 
 	//spit out a row with all the relevant info
@@ -57,6 +71,7 @@ class Task {
 		//jeez
 		$('#'+this.htmlId).html( this.createInnerHTML())
 		taskManager.insertHeading(this.name)
+		taskManager.saveTasks()
 	}
 
 	changeId(newId) {
@@ -104,7 +119,8 @@ class Task {
 
 	createHeading() {
 		var output = '<h1 id="progress">'+this.streak+' '+this.name+' </h1>\
-			<p class="subtitle" id="your-record">your record is '+this.personalBest+'</p>'
+			<p class="subtitle" id="your-record">your personal best is '+this.personalBest+'</p>\
+			<p class="subtitle">your current streak is '+this.streak+'</p>'
 		return output
 	}
 
@@ -131,12 +147,14 @@ var taskManager = {
 		if (this.tasks.indexOf(task) < 0) {
 			this.tasks.push(task)
 		}
+		this.saveTasks()
 	},
 	insertHeading: function(taskName) {
 		$("#heading-container").html(this.getTask(taskName).createHeading())
 	},
 	toggleDone: function(taskName) {
 		this.getTask(taskName).toggleDone()
+		this.saveTasks()
 	},
 	saveTasks: function() {
 		var tempList = []
@@ -151,10 +169,17 @@ var taskManager = {
 		var tempList = JSON.parse(storage.getItem('taskList'))
 
 		for (var i = 0; i < tempList.length; i++) {
-			//convert the stored object into a Task
+			//deletion happens here, on load
 			var o = JSON.parse(tempList[i])
-			var t = new Task(o.name, o.streak, o.personalBest, o.doneToday, o.lastTimestamp)
+			if (!o.toDelete) {
+				//convert the stored object into a Task
+				var t = new Task(o.name, o.streak, o.personalBest, o.doneToday, o.lastTimestamp)
+			}
 		}
+		if (this.tasks.length > 0) {
+			this.insertHeading(this.tasks[0].name)
+		}
+		this.saveTasks()
 	},
 	appendTask: function(taskObj) {
 		$("#tasks").append(taskObj.createHTML())
@@ -167,14 +192,22 @@ var taskManager = {
 		}
 		var tempTask = new Task(taskName, 0, 0, false, null)
 		this.appendTask(tempTask)
+		this.saveTasks()
 	},
 	removeTask: function(taskName) {
-		$('#'+this.getTask(taskName).htmlId).remove()
+		/* $('#'+this.getTask(taskName).htmlId).remove()
 		for (var i = 0; i < this.tasks.length; i++) {
 			if (this.tasks[i].name == taskName) {
 				this.tasks.splice(i, 1)
 			}
+		}*/
+		var tempTask = this.getTask(taskName)
+		if (tempTask.toDelete == false) {
+			tempTask.markForDeletion()
+		} else {
+			tempTask.unmarkForDeletion()
 		}
+		this.saveTasks()
 	},
 	editTask: function(taskName) {
 		var newName = prompt("Enter another name for "+taskName+':')
