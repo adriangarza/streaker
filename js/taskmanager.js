@@ -1,12 +1,16 @@
 class Task {
 
-	constructor(name, streak, personalBest, doneToday) {
+	constructor(name, streak, personalBest, doneToday, lastTimestamp) {
 		this.name = name
 		this.creationDate = Date.now()
 		this.streak = streak
 		this.personalBest = personalBest
-		this.lastTimestamp = 0
-		this.doneToday = doneToday
+		this.lastTimestamp = lastTimestamp
+		//this.doneToday = doneToday
+		this.doneToday = (checkSameDay(new Date(lastTimestamp), new Date()))
+		if (checkAfterTomorrow(new Date(lastTimestamp), new Date())) {
+			this.streak = 0;
+		}
 		taskManager.addTask(this)
 	}
 	
@@ -16,13 +20,26 @@ class Task {
 	}
 
 	addOne() {
-		console.log("adding one to " + this.streak)
 		this.streak++
 		if (this.streak > this.personalBest) {
 			this.personalBest++
 		}
 		this.doneToday = true;
 		this.reloadContent()
+	}
+
+	subOne() {
+		if (this.streak > 0) this.streak--
+		this.doneToday = false
+		this.reloadContent()
+	}
+
+	toggleDone() {
+		if (!this.doneToday) {
+			this.addOne()
+		} else {
+			this.subOne()
+		}
 	}
 
 	//spit out a row with all the relevant info
@@ -32,15 +49,15 @@ class Task {
 
 	reloadContent() {
 		//jeez
-		console.log("reloading content of " + this.name)
 		$('#'+this.htmlId).html( this.createInnerHTML())
+		taskManager.insertHeading(this.name)
 	}
 
 	createInnerHTML() {
 		var checkText = this.doneToday ? 'done' : 'add'
 		var streakCheck = (this.streak >= this.personalBest) ? 'new-record' : ''
-		var checkEnabled = this.doneToday ? '' : 'taskbutton'
-		var addable = this.doneToday ? '' : 'onclick="taskManager.addToTask(\''+this.name+'\')"'
+		var checkEnabled = this.doneToday ? 'taskbutton' : 'taskbutton'
+		var addable = /*this.doneToday ? '' :*/ 'onclick="taskManager.toggleDone(\''+this.name+'\')"'
 		
 		var output = '<span class="task-item '+checkEnabled+' checkbutton centered"'+addable+'><i class="material-icons">'+checkText+'</i></span>\
 		<span class="task-item streak-container '+streakCheck+'" >\
@@ -71,10 +88,8 @@ class Task {
 		<li class="task" id="'+this.htmlId+'">' +
 		this.createInnerHTML()
 		+'</li>'
-
-	console.log(this)
-
-	return output
+		
+		return output
 	}
 
 	createHeading() {
@@ -88,7 +103,6 @@ class Task {
 var taskManager = {
 	tasks: [],
 	addToTask: function(taskName) {
-		console.log("looking for " + taskName)
 		for (var i = 0; i < this.tasks.length; i++) {
 			if (this.tasks[i].name == taskName) {
 				console.log("found it")
@@ -99,7 +113,6 @@ var taskManager = {
 	getTask: function(taskName) {
 		for (var i = 0; i < this.tasks.length; i++) {
 			if (this.tasks[i].name == taskName) {
-				console.log("found it")
 				return this.tasks[i]
 			}
 		}
@@ -112,15 +125,26 @@ var taskManager = {
 	},
 	insertHeading: function(taskName) {
 		$("#heading-container").html(this.getTask(taskName).createHeading())
-	}
-}
+	},
+	toggleDone: function(taskName) {
+		this.getTask(taskName).toggleDone()
+	},
+	saveTasks: function() {
+		var tempList = []
+		for (var i = 0; i < this.tasks.length; i++) {
+			tempList.push(JSON.stringify(this.tasks[i]))
+		}
+		storage.setItem("taskList", JSON.stringify(tempList))
+	},
+	loadTasks: function() {
+		if (storage.getItem('taskList') == null) return
 
-function checkTomorrow(date1, date2) {
-	var date1_tomorrow = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate() + 1)
-	if (date1_tomorrow.getFullYear() == date2.getFullYear() 
-		&& date1_tomorrow.getMonth() == date2.getMonth() 
-		&& date1_tomorrow.getDate() == date2.getDate()) {
-	    return true
-	} 
-	return false
+		var tempList = JSON.parse(storage.getItem('taskList'))
+
+		for (var i = 0; i < tempList.length; i++) {
+			//convert the stored object into a Task
+			var o = JSON.parse(tempList[i])
+			var t = new Task(o.name, o.streak, o.personalBest, o.doneToday, o.lastTimestamp)
+		}
+	}
 }

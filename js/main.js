@@ -46,13 +46,10 @@ $(document).ready(function() {
 		resetCount()
 	}
 
-	var taskList = [
-		new Task('core workouts', '4', '4', true),
-		new Task('days studied', '0', '7', false),
-	]
+	taskManager.loadTasks()
 
-	for (var i = 0; i < taskList.length; i++) {
-		$("#tasks").append(taskList[i].html)
+	for (var i = 0; i < taskManager.tasks.length; i++) {
+		$("#tasks").append(taskManager.tasks[i].html)
 	}
 })
 
