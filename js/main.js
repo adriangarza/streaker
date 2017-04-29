@@ -4,7 +4,7 @@ function getCount() {
 	return Number(storage.getItem('itemCount')) || 0
 }
 function updateProgress() {
-	$("#progress").html(getCount()+' '+todo+' in a row')
+	$("#progress").html(getCount()+' '+todo+'')
 }
 function resetCount() {
 	storage.setItem('itemCount', 0)

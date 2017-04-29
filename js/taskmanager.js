@@ -59,6 +59,10 @@ class Task {
 		taskManager.insertHeading(this.name)
 	}
 
+	changeId(newId) {
+		$('#'+this.htmlId).attr("id", newId);
+	}
+
 	createInnerHTML() {
 		var checkText = this.doneToday ? 'done' : 'add'
 		var streakCheck = (this.streak >= this.personalBest && this.streak > 0) ? 'new-record' : ''
@@ -76,7 +80,7 @@ class Task {
 			<span class="personal-record">'+this.personalBest+'</span>\
 		</span>'
 		+'\
-		<span class="task-item taskbutton singlebutton">\
+		<span class="task-item taskbutton singlebutton" onclick="taskManager.editTask(\''+this.name+'\')">\
 			<i class="material-icons">edit</i>\
 		</span>\
 		<span class="task-item delete taskbutton centered" onclick="taskManager.removeTask(\''+this.name+'\')">\
@@ -99,7 +103,7 @@ class Task {
 	}
 
 	createHeading() {
-		var output = '<h1 id="progress">'+this.streak+' '+this.name+' in a row </h1>\
+		var output = '<h1 id="progress">'+this.streak+' '+this.name+' </h1>\
 			<p class="subtitle" id="your-record">your record is '+this.personalBest+'</p>'
 		return output
 	}
@@ -157,7 +161,8 @@ var taskManager = {
 	},
 	createTask: function() {
 		var taskName = prompt("What are you gonna do?")
-		while (this.tasks.includes(taskName.toLowerCase())) {
+		console.log(taskName)
+		while (this.getTask(taskName) != null) {
 			taskName = prompt("Try another name, that one is in use.")
 		}
 		var tempTask = new Task(taskName, 0, 0, false, null)
@@ -170,5 +175,15 @@ var taskManager = {
 				this.tasks.splice(i, 1)
 			}
 		}
+	},
+	editTask: function(taskName) {
+		var newName = prompt("Enter another name for "+taskName+':')
+		while (this.getTask(newName) != null) {
+			newName = prompt("Try another name, that one is in use.")
+		}
+		var currentTask = this.getTask(taskName)
+		currentTask.changeId(newName)
+		currentTask.name = newName
+		currentTask.reloadContent()
 	}
 }
